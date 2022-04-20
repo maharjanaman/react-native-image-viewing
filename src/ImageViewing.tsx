@@ -42,6 +42,7 @@ type Props = {
   delayLongPress?: number;
   HeaderComponent?: ComponentType<{ imageIndex: number }>;
   FooterComponent?: ComponentType<{ imageIndex: number }>;
+  children?: React.ReactNode;
 };
 
 const DEFAULT_ANIMATION_TYPE = "fade";
@@ -66,11 +67,12 @@ function ImageViewing({
   delayLongPress = DEFAULT_DELAY_LONG_PRESS,
   HeaderComponent,
   FooterComponent,
+  children,
 }: Props) {
   const imageList = useRef<VirtualizedList<ImageSource>>(null);
   const [opacity, onRequestCloseEnhanced] = useRequestClose(onRequestClose);
   const [currentImageIndex, onScroll] = useImageIndexChange(imageIndex, SCREEN);
-  const [headerTransform, footerTransform, toggleVisible] =
+  const [headerTransform, footerTransform, toggleBarsVisible] =
     useAnimatedComponents();
 
   useEffect(() => {
@@ -83,7 +85,7 @@ function ImageViewing({
     (isScaled: boolean) => {
       // @ts-ignore
       imageList?.current?.setNativeProps({ scrollEnabled: !isScaled });
-      toggleVisible(!isScaled);
+      toggleBarsVisible(!isScaled);
     },
     [imageList]
   );
@@ -162,6 +164,8 @@ function ImageViewing({
           </Animated.View>
         )}
       </View>
+
+      {children}
     </Modal>
   );
 }
