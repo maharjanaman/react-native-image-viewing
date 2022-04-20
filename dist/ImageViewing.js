@@ -18,11 +18,11 @@ const DEFAULT_BG_COLOR = "#000";
 const DEFAULT_DELAY_LONG_PRESS = 800;
 const SCREEN = Dimensions.get("screen");
 const SCREEN_WIDTH = SCREEN.width;
-function ImageViewing({ images, keyExtractor, imageIndex, visible, onRequestClose, onLongPress = () => { }, onImageIndexChange, animationType = DEFAULT_ANIMATION_TYPE, backgroundColor = DEFAULT_BG_COLOR, presentationStyle, swipeToCloseEnabled, doubleTapToZoomEnabled, delayLongPress = DEFAULT_DELAY_LONG_PRESS, HeaderComponent, FooterComponent, }) {
+function ImageViewing({ images, keyExtractor, imageIndex, visible, onRequestClose, onLongPress = () => { }, onImageIndexChange, animationType = DEFAULT_ANIMATION_TYPE, backgroundColor = DEFAULT_BG_COLOR, presentationStyle, swipeToCloseEnabled, doubleTapToZoomEnabled, delayLongPress = DEFAULT_DELAY_LONG_PRESS, HeaderComponent, FooterComponent, children, }) {
     const imageList = useRef(null);
     const [opacity, onRequestCloseEnhanced] = useRequestClose(onRequestClose);
     const [currentImageIndex, onScroll] = useImageIndexChange(imageIndex, SCREEN);
-    const [headerTransform, footerTransform, toggleVisible] = useAnimatedComponents();
+    const [headerTransform, footerTransform, toggleBarsVisible] = useAnimatedComponents();
     useEffect(() => {
         if (onImageIndexChange) {
             onImageIndexChange(currentImageIndex);
@@ -32,7 +32,7 @@ function ImageViewing({ images, keyExtractor, imageIndex, visible, onRequestClos
         var _a, _b;
         // @ts-ignore
         (_b = (_a = imageList) === null || _a === void 0 ? void 0 : _a.current) === null || _b === void 0 ? void 0 : _b.setNativeProps({ scrollEnabled: !isScaled });
-        toggleVisible(!isScaled);
+        toggleBarsVisible(!isScaled);
     }, [imageList]);
     if (!visible) {
         return null;
@@ -62,6 +62,8 @@ function ImageViewing({ images, keyExtractor, imageIndex, visible, onRequestClos
     })}
           </Animated.View>)}
       </View>
+
+      {children}
     </Modal>);
 }
 const styles = StyleSheet.create({
